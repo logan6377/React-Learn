@@ -1,33 +1,70 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Counters from './components/counters';
-import MovieList from './components/movieList';
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import Counters from "./components/counters";
+import Navbar from "./components/navbar";
+import MovieList from "./components/movieList";
 
 class App extends Component {
+  state = {
+    counters: [
+      { id: 1, value: 1 },
+      { id: 2, value: 2 },
+      { id: 3, value: 0 },
+      { id: 4, value: 0 }
+    ]
+  };
 
-      constructor(props){
-            super(props)
+  handleIncreament = counter => {
+    console.log(this.state.counters, counter);
+    const counters = [...this.state.counters];
+    const index = counters.indexOf(counter);
+    counters[index] = { ...counter };
+    counters[index].value++;
+    this.setState({ counters });
+  };
 
-            /* const first = { name: "Log"}
-            const second = { job: 'FED', arun:{age:27,role:'fed'}}
-            const ar = [1,2,3]
-            const comb = {...first, ...second, ...[ar]}
+  handleDecreament = counter => {
+    console.log(counter);
+    const counters = [...this.state.counters];
+    const index = counters.indexOf(counter);
+    counters[index] = { ...counter };
+    counters[index].value--;
+    this.setState({ counters });
+  };
 
-            console.log(comb) */
-      }
+  handleDelete = counterID => {
+    const counters = this.state.counters.filter(c => c.id !== counterID);
+    this.setState({ counters: counters });
+  };
 
-      state = {title:"React App"}
+  handleReset = () => {
+    const counters = this.state.counters.map(c => {
+      c.value = 0;
+      return c;
+    });
 
-       
+    this.setState({ counters });
+  };
 
-      render() { 
-            return (
-                  <div className="container"> 
-                        <Counters />
-                  </div>
-            );
-      }
-} 
+  render() {
+    return (
+      <div>
+        <Navbar
+          totalNumber={this.state.counters.filter(c => c.value > 0).length}
+        />
+        <div className="container">
+          <Counters
+            onIncrement={this.handleIncreament}
+            onDelete={this.handleDelete}
+            onReset={this.handleReset}
+            counters={this.state.counters}
+            onDecreament={this.handleDecreament}
+          />
+        </div>
+      </div>
+    );
+  }
+}
 
 export default App;
