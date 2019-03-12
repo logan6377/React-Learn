@@ -16,9 +16,10 @@ class MovieList extends Component {
   };
 
   componentDidMount() {
+    const allgenre = [{ name: "All Genres" }, ...getGenres()];
     this.setState({
       movies: getMovies(),
-      list: getGenres()
+      list: allgenre
     });
   }
 
@@ -39,17 +40,24 @@ class MovieList extends Component {
   };
 
   handleGenres = gen => {
-    const movies = this.state.movies.filter(m => m.genre._id === gen);
-    this.setState({ movies });
+    this.setState({ selectedGenres: gen, currentPage: 1 });
   };
 
   render() {
-    const { pageSize, currentPage, movies: allMovies } = this.state;
+    const {
+      pageSize,
+      currentPage,
+      selectedGenres,
+      movies: allMovies
+    } = this.state;
     const { length: count } = this.state.movies;
 
     if (count === 0) return <div>There is no Movie in data base</div>;
-
-    const movies = pagenate(allMovies, currentPage, pageSize);
+    const filtered =
+      selectedGenres && selectedGenres._id
+        ? allMovies.filter(m => m.genre._id === selectedGenres._id)
+        : allMovies;
+    const movies = pagenate(filtered, currentPage, pageSize);
 
     return (
       <div className="container p-2">
@@ -58,11 +66,12 @@ class MovieList extends Component {
             <Listgroup
               genres={this.state.list}
               moviesGenre={this.handleGenres}
+              selectedItem={this.state.selectedGenres}
             />
           </div>
           <div className="col-md-10">
             <h3 style={{ padding: "10px 10px", fontSize: 22 }}>
-              Showing {count} movies in the database.
+              Showing {filtered.length} movies in the database.
             </h3>
             <table className="table">
               <thead>
@@ -99,7 +108,7 @@ class MovieList extends Component {
             </table>
 
             <Pagenation
-              itemCount={count}
+              itemCount={filtered.length}
               pageSize={pageSize}
               currentPage={currentPage}
               onPageChange={this.handlePageChange}
