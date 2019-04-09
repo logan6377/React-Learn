@@ -60,59 +60,61 @@ class MovieList extends Component {
     const movies = pagenate(filtered, currentPage, pageSize);
 
     return (
-      <div className="container p-2">
-        <div className="row">
-          <div className="col-md-2">
-            <Listgroup
-              genres={this.state.list}
-              moviesGenre={this.handleGenres}
-              selectedItem={this.state.selectedGenres}
-            />
-          </div>
-          <div className="col-md-10">
-            <h3 style={{ padding: "10px 10px", fontSize: 22 }}>
-              Showing {filtered.length} movies in the database.
-            </h3>
-            <table className="table">
-              <thead>
-                <tr>
-                  {this.state.category.map(value => (
-                    <th key={value}>{value}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {movies.map((value, index) => (
-                  <tr key={value._id}>
-                    <td>{value.title}</td>
-                    <td>{value.genre.name}</td>
-                    <td>{value.numberInStock}</td>
-                    <td>{value.dailyRentalRate}</td>
-                    <td>
-                      <Likes
-                        likeStatus={value.likes}
-                        onClick={() => this.handleLike(value)}
-                      />
-                    </td>
-                    <td>
-                      <button
-                        className="btn btn-danger"
-                        onClick={() => this.deleteMovie(value._id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
+      <div>
+        <div className="container p-2">
+          <div className="row">
+            <div className="col-md-2">
+              <Listgroup
+                genres={this.state.list}
+                moviesGenre={this.handleGenres}
+                selectedItem={this.state.selectedGenres}
+              />
+            </div>
+            <div className="col-md-10">
+              <h3 style={{ padding: "10px 10px", fontSize: 22 }}>
+                Showing {filtered.length} movies in the database.
+              </h3>
+              <table className="table">
+                <thead>
+                  <tr>
+                    {this.state.category.map(value => (
+                      <th key={value}>{value}</th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {movies.map((value, index) => (
+                    <tr key={value._id}>
+                      <td>{value.title}</td>
+                      <td>{value.genre.name}</td>
+                      <td>{value.numberInStock}</td>
+                      <td>{value.dailyRentalRate}</td>
+                      <td>
+                        <Likes
+                          likeStatus={value.likes}
+                          onClick={() => this.handleLike(value)}
+                        />
+                      </td>
+                      <td>
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => this.deleteMovie(value._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
 
-            <Pagenation
-              itemCount={filtered.length}
-              pageSize={pageSize}
-              currentPage={currentPage}
-              onPageChange={this.handlePageChange}
-            />
+              <Pagenation
+                itemCount={filtered.length}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                onPageChange={this.handlePageChange}
+              />
+            </div>
           </div>
         </div>
       </div>

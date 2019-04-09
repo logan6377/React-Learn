@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import Counters from "./components/counters";
 import Navbar from "./components/navbar";
+import Mainnav from "./components/common/mainnav";
 import MovieList from "./components/movieList";
 
 class App extends Component {
@@ -50,6 +51,7 @@ class App extends Component {
   render() {
     return (
       <div>
+        <Mainnav />
         <Navbar
           totalNumber={this.state.counters.filter(c => c.value > 0).length}
         />
